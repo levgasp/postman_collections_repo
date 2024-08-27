@@ -1,0 +1,626 @@
+{
+	"info": {
+		"_postman_id": "008055d1-52aa-459c-923d-5308dff48fc1",
+		"name": "Products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28052815"
+	},
+	"item": [
+		{
+			"name": "Getting all objects",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}",
+					"host": [
+						"{{productdomain}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Creating object",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var productID = jsonData.id\r",
+							"var productName = jsonData.name\r",
+							"\r",
+							"pm.collectionVariables.set(\"productID\", productID);\r",
+							"\r",
+							"// Tests //\r",
+							"\r",
+							"pm.test(\"Product name checking\", function () {\r",
+							"    var productName = pm.collectionVariables.get(\"name\");\r",
+							"    pm.expect(jsonData.name).to.eql(productName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Customer name checking\", function () {\r",
+							"    var customer = pm.collectionVariables.get(\"customer\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(customer);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Color checking\", function () {\r",
+							"    var color = pm.collectionVariables.get(\"color\");\r",
+							"    pm.expect(jsonData.data.box_color).to.eql(color);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Price checking\", function () {\r",
+							"    var productPrice = parseInt(pm.collectionVariables.get(\"price\"));\r",
+							"    pm.expect(jsonData.data.price).to.eql(productPrice);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Material checking\", function () {\r",
+							"    var productMaterial = pm.collectionVariables.get(\"material\");\r",
+							"    pm.expect(jsonData.data.material).to.eql(productMaterial);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var productAdjective = pm.collectionVariables.get(\"adjective\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(productAdjective);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Additional checking\", function () {\r",
+							"    pm.expect(jsonData.data).to.not.have.property(\"ololo\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string - 'OK'\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let name = pm.variables.replaceIn(\"{{$randomProduct}}\");\r",
+							"pm.collectionVariables.set(\"name\", name);\r",
+							"\r",
+							"let customer = pm.variables.replaceIn(\"{{$randomFirstName}}\");\r",
+							"pm.collectionVariables.set(\"customer\", customer);\r",
+							"\r",
+							"let color = pm.variables.replaceIn(\"{{$randomColor}}\");\r",
+							"pm.collectionVariables.set(\"color\", color);\r",
+							"\r",
+							"let price = pm.variables.replaceIn(\"{{$randomInt}}\");\r",
+							"pm.collectionVariables.set(\"price\", price)\r",
+							"\r",
+							"let material = pm.variables.replaceIn(\"{{$randomProductMaterial}}\")\r",
+							"pm.collectionVariables.set(\"material\", material)\r",
+							"\r",
+							"let adjective = pm.variables.replaceIn(\"{{$randomProductAdjective}}\")\r",
+							"pm.collectionVariables.set(\"adjective\", adjective)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"{{name}}\",\r\n   \"data\": {\r\n      \"customer\": \"{{customer}}\",\r\n      \"box_color\": \"{{color}}\",\r\n      \"price\": {{price}},\r\n      \"material\": \"{{material}}\",\r\n      \"adjective\": \"{{adjective}}\"\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{productdomain}}",
+					"host": [
+						"{{productdomain}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receiving unique Product object",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Product name checking\", function () {\r",
+							"    var productName = pm.collectionVariables.get(\"name\");\r",
+							"    pm.expect(jsonData.name).to.eql(productName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Customer name checking\", function () {\r",
+							"    var customer = pm.collectionVariables.get(\"customer\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(customer);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Color checking\", function () {\r",
+							"    var color = pm.collectionVariables.get(\"color\");\r",
+							"    pm.expect(jsonData.data.box_color).to.eql(color);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Price checking\", function () {\r",
+							"    var productPrice = parseInt(pm.collectionVariables.get(\"price\"));\r",
+							"    pm.expect(jsonData.data.price).to.eql(productPrice);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Material checking\", function () {\r",
+							"    var productMaterial = pm.collectionVariables.get(\"material\");\r",
+							"    pm.expect(jsonData.data.material).to.eql(productMaterial);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var productAdjective = pm.collectionVariables.get(\"adjective\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(productAdjective);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updating Product object",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let putname = pm.variables.replaceIn(\"{{$randomProduct}}\");\r",
+							"pm.collectionVariables.set(\"putname\", putname);\r",
+							"\r",
+							"let putcustomer = pm.variables.replaceIn(\"{{$randomFirstName}}\");\r",
+							"pm.collectionVariables.set(\"putcustomer\", putcustomer);\r",
+							"\r",
+							"let putcolor = pm.variables.replaceIn(\"{{$randomColor}}\");\r",
+							"pm.collectionVariables.set(\"putcolor\", putcolor);\r",
+							"\r",
+							"let putprice = pm.variables.replaceIn(\"{{$randomInt}}\");\r",
+							"pm.collectionVariables.set(\"putprice\", putprice)\r",
+							"\r",
+							"let putmaterial = pm.variables.replaceIn(\"{{$randomProductMaterial}}\")\r",
+							"pm.collectionVariables.set(\"putmaterial\", putmaterial)\r",
+							"\r",
+							"let putadjective = pm.variables.replaceIn(\"{{$randomProductAdjective}}\")\r",
+							"pm.collectionVariables.set(\"putadjective\", putadjective)\r",
+							"\r",
+							"let putsurprise = pm.variables.replaceIn(\"{{$randomProductName}}\")\r",
+							"pm.collectionVariables.set(\"putsurprise\", putsurprise)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Tests //\r",
+							"\r",
+							"pm.test(\"Product name checking\", function () {\r",
+							"    var productName = pm.collectionVariables.get(\"putname\");\r",
+							"    pm.expect(jsonData.name).to.eql(productName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Customer name checking\", function () {\r",
+							"    var customer = pm.collectionVariables.get(\"putcustomer\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(customer);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Color checking\", function () {\r",
+							"    var color = pm.collectionVariables.get(\"putcolor\");\r",
+							"    pm.expect(jsonData.data.box_color).to.eql(color);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Price checking\", function () {\r",
+							"    var productPrice = parseInt(pm.collectionVariables.get(\"putprice\"));\r",
+							"    pm.expect(jsonData.data.price).to.eql(productPrice);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Material checking\", function () {\r",
+							"    var productMaterial = pm.collectionVariables.get(\"putmaterial\");\r",
+							"    pm.expect(jsonData.data.material).to.eql(productMaterial);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var productAdjective = pm.collectionVariables.get(\"putadjective\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(productAdjective);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Bonus-Surprise checking\", function () {\r",
+							"    var bonusSurprise = pm.collectionVariables.get(\"putsurprise\");\r",
+							"    pm.expect(jsonData.data.bonus_surprise).to.eql(bonusSurprise);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"{{putname}}\",\r\n   \"data\": {\r\n      \"customer\": \"{{putcustomer}}\",\r\n      \"box_color\": \"{{putcolor}}\",\r\n      \"price\": {{putprice}},\r\n      \"material\": \"{{putmaterial}}\",\r\n      \"adjective\": \"{{putadjective}}\",\r\n      \"bonus_surprise\": \"{{putsurprise}}\"\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receiving unique Product object Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Tests //\r",
+							"\r",
+							"pm.test(\"Product name checking\", function () {\r",
+							"    var productName = pm.collectionVariables.get(\"putname\");\r",
+							"    pm.expect(jsonData.name).to.eql(productName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Customer name checking\", function () {\r",
+							"    var customer = pm.collectionVariables.get(\"putcustomer\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(customer);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Color checking\", function () {\r",
+							"    var color = pm.collectionVariables.get(\"putcolor\");\r",
+							"    pm.expect(jsonData.data.box_color).to.eql(color);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Price checking\", function () {\r",
+							"    var productPrice = parseInt(pm.collectionVariables.get(\"putprice\"));\r",
+							"    pm.expect(jsonData.data.price).to.eql(productPrice);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Material checking\", function () {\r",
+							"    var productMaterial = pm.collectionVariables.get(\"putmaterial\");\r",
+							"    pm.expect(jsonData.data.material).to.eql(productMaterial);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var productAdjective = pm.collectionVariables.get(\"putadjective\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(productAdjective);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Bonus-Surprise checking\", function () {\r",
+							"    var bonusSurprise = pm.collectionVariables.get(\"putsurprise\");\r",
+							"    pm.expect(jsonData.data.bonus_surprise).to.eql(bonusSurprise);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial updating Product object",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let patchlastname = pm.variables.replaceIn(\"{{$randomLastName}}\");\r",
+							"pm.collectionVariables.set(\"patchlastname\", patchlastname);\r",
+							"\r",
+							"let patchword = pm.variables.replaceIn(\"{{$randomWord}}\");\r",
+							"pm.collectionVariables.set(\"patchword\", patchword);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Tests //\r",
+							"\r",
+							"pm.test(\"Customer lastname checking\", function () {\r",
+							"    var lastName = pm.collectionVariables.get(\"patchlastname\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(lastName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var adjective = pm.collectionVariables.get(\"patchword\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(adjective);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"{{putname}}\",\r\n   \"data\": {\r\n      \"customer\": \"{{patchlastname}}\",\r\n      \"box_color\": \"{{putcolor}}\",\r\n      \"price\": {{putprice}},\r\n      \"material\": \"{{putmaterial}}\",\r\n      \"adjective\": \"{{patchword}}\",\r\n      \"bonus_surprise\": \"{{putsurprise}}\"\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receiving unique Product object Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Tests //\r",
+							"\r",
+							"pm.test(\"Customer lastname checking\", function () {\r",
+							"    var lastName = pm.collectionVariables.get(\"patchlastname\");\r",
+							"    pm.expect(jsonData.data.customer).to.eql(lastName);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Adjective checking\", function () {\r",
+							"    var adjective = pm.collectionVariables.get(\"patchword\");\r",
+							"    pm.expect(jsonData.data.adjective).to.eql(adjective);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleting Product object",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receiving unique Product object Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{productdomain}}/{{productID}}",
+					"host": [
+						"{{productdomain}}"
+					],
+					"path": [
+						"{{productID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "productID",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "customer",
+			"value": ""
+		},
+		{
+			"key": "price",
+			"value": ""
+		},
+		{
+			"key": "material",
+			"value": ""
+		},
+		{
+			"key": "adjective",
+			"value": ""
+		},
+		{
+			"key": "color",
+			"value": ""
+		},
+		{
+			"key": "surprise",
+			"value": ""
+		},
+		{
+			"key": "putname",
+			"value": ""
+		},
+		{
+			"key": "putcustomer",
+			"value": ""
+		},
+		{
+			"key": "putcolor",
+			"value": ""
+		},
+		{
+			"key": "putprice",
+			"value": ""
+		},
+		{
+			"key": "putmaterial",
+			"value": ""
+		},
+		{
+			"key": "putadjective",
+			"value": ""
+		},
+		{
+			"key": "putsurprise",
+			"value": ""
+		},
+		{
+			"key": "patchlastname",
+			"value": ""
+		},
+		{
+			"key": "patchcity",
+			"value": ""
+		},
+		{
+			"key": "patchword",
+			"value": ""
+		}
+	]
+}
